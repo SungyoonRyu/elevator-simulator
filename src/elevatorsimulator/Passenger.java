@@ -33,6 +33,17 @@ public class Passenger {
 		this.capacity = capacity;
 		this.timeOfArrival = clock.timeNow();
 	}
+
+	/**
+	 *
+	 */
+	public Passenger(long id, int arrivalFloor, int destinationFloor, int capacity, long time) {
+		this.id = id;
+		this.arrivalFloor = arrivalFloor;
+		this.destinationFloor = destinationFloor;
+		this.capacity = capacity;
+		this.timeOfArrival = time;
+	}
 	
 	/**
 	 * Returns the id
