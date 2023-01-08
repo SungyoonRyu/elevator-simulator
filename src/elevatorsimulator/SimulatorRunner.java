@@ -54,7 +54,7 @@ public class SimulatorRunner {
 				String name = "";
 				
 				for (int i = 0; i < this.numRuns; i++) {
-					Simulator simulator = new Simulator(scenario, this.settings, schedulerCreator, randSeeds[i]);
+					Simulator simulator = new Simulator(scenario, this.settings, schedulerCreator, false, randSeeds[i]);
 					simulator.setExportStats(false);
 					simulator.run();
 					stats.add(simulator.getStats().getGlobalInterval());
@@ -126,5 +126,9 @@ public class SimulatorRunner {
 		SimulatorSettings settings = new SimulatorSettings(0.01, 24 * 60 * 60);	
 		SimulatorRunner runner = new SimulatorRunner(NUM_DATA_RUNS, settings, scenarios, schedulerCreators);
 		runner.run();
+	}
+
+	public void createPassengerList() {
+
 	}
 }

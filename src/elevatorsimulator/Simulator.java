@@ -22,28 +22,41 @@ public class Simulator {
 	private final ControlSystem controlSystem;
 	
 	private long passengerId = 0;
-	
+
+	private final boolean usingPassengerList;
 	private final boolean enableLog = false;
 	private final boolean debugMode = false;
-	
+
 	/**
 	 * Creates a new simulator
 	 * @param scenario The scenario
 	 * @param settings The settings
-	 * @param scheduler The scheduler
+	 * @param schedulerCreator The scheduler
 	 */
 	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator) {
-		this(scenario, settings, schedulerCreator, -1);
+		this(scenario, settings, schedulerCreator, false, -1);
+	}
+
+	/**
+	 * Creates a new simulator
+	 * @param scenario The scenario
+	 * @param settings The settings
+	 * @param schedulerCreator The scheduler
+	 * @param usingPassengerList The passengerList
+	 */
+	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator, boolean usingPassengerList) {
+		this(scenario, settings, schedulerCreator, usingPassengerList, -1);
 	}
 	
 	/**
 	 * Creates a new simulator
 	 * @param scenario The scenario
 	 * @param settings The settings
-	 * @param scheduler The scheduler
+	 * @param schedulerCreator The scheduler
+	 * @param usingPassengerList The passengerList
 	 * @param randSeed The random seed
 	 */
-	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator, long randSeed) {		
+	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator, boolean usingPassengerList, long randSeed) {
 		if (randSeed == -1) {
 			randSeed = System.currentTimeMillis();
 		}
@@ -56,6 +69,7 @@ public class Simulator {
 		this.building = scenario.createBuilding();
 		this.controlSystem = new ControlSystem(this, schedulerCreator.createScheduler(this.building));
 		this.stats = new SimulatorStats(this);
+		this.usingPassengerList = usingPassengerList;
 	}
 	
 	/**
