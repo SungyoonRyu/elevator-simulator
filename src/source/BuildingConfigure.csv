@@ -1,0 +1,7 @@
+sep=;
+name;myBuilding;
+numElevator;3;
+elevatorConfig;8;1.5;2.6;2.6;1;
+floorResidents;0;65;80;75;85;90;90;75;80;70;
+trafficProfile;0;
+simulatorTimeStep;0.01;
