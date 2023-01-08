@@ -1,4 +1,7 @@
 package elevatorsimulator;
+
+import java.util.stream.Stream;
+
 /**
  * Represents a clock for the simulator
  * @author Anton Jansson and Kristoffer Uggla Lingvall
@@ -94,6 +97,23 @@ public class SimulatorClock {
 		int sec = (int)numSec;
 		
 		return (hour < 10 ? "0" + hour : hour) + ":" + (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+	}
+
+	/**
+	 * @author Sungyoon Ryu
+	 */
+	public long timeFromFormattedTime(String formatted) {
+		long time = 0;
+		String[] timesString = formatted.split(":");
+		int[] timeInt = Stream.of(timesString).mapToInt(Integer::parseInt).toArray();
+
+		double hour = timeInt[0] * 60 * 60;
+		double minute = timeInt[1] * 60;
+		double second = timeInt[2];
+
+		time = (long)((hour + minute + second) * NANOSECONDS_PER_SECOND);
+
+		return time;
 	}
 	
 	/**
