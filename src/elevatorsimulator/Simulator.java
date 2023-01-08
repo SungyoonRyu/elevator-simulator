@@ -24,18 +24,19 @@ public class Simulator {
 	private long passengerId = 0;
 
 	private final boolean usingPassengerList;
-	private final boolean enableLog = false;
+	private Queue<Passenger> pre_madeList = null;
+	private final boolean enableLog = true;
 	private final boolean debugMode = false;
 
-	/**
-	 * Creates a new simulator
-	 * @param scenario The scenario
-	 * @param settings The settings
-	 * @param schedulerCreator The scheduler
-	 */
-	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator) {
-		this(scenario, settings, schedulerCreator, false, -1);
-	}
+//	/**
+//	 * Creates a new simulator
+//	 * @param scenario The scenario
+//	 * @param settings The settings
+//	 * @param schedulerCreator The scheduler
+//	 */
+//	public Simulator(Scenario scenario, SimulatorSettings settings, SchedulerCreator schedulerCreator) {
+//		this(scenario, settings, schedulerCreator, false, -1);
+//	}
 
 	/**
 	 * Creates a new simulator
@@ -70,6 +71,9 @@ public class Simulator {
 		this.controlSystem = new ControlSystem(this, schedulerCreator.createScheduler(this.building));
 		this.stats = new SimulatorStats(this);
 		this.usingPassengerList = usingPassengerList;
+
+		if(this.usingPassengerList)
+			pre_madeList = SimulatorInterface.createPre_madePassengerList(this);
 	}
 	
 	/**
@@ -113,7 +117,10 @@ public class Simulator {
 	public ControlSystem getControlSystem() {
 		return controlSystem;
 	}
-	
+
+	public boolean isUsingPassengerList() { return usingPassengerList; }
+	public Queue<Passenger> getPre_madeList() { return pre_madeList; }
+
 	/**
 	 * Indicates if the stats are exported
 	 */
@@ -314,18 +321,20 @@ public class Simulator {
 	}
 	
 	public static void main(String[] args) {		
-		SchedulerCreator creator = new SchedulerCreator() {		
-			@Override
-			public SchedulingAlgorithm createScheduler(Building building) {
-				return new Zoning(building.getElevatorCars().length, building);
-			}
-		};
+		SimulatorInterface inputInterface = new SimulatorInterface();
 				
-		Simulator simulator = new Simulator(
-			Scenarios.createLargeBuilding(3),
-			new SimulatorSettings(0.01, 24 * 60 * 60),
-			creator);
-		
+		Simulator simulator = inputInterface.createSimulator();
+
+//		if(simulator.usingPassengerList) {
+//			if(simulator.pre_madeList != null) {
+//				Iterator<Passenger> pass = simulator.pre_madeList.iterator();
+//				while(pass.hasNext()) {
+//					Passenger passenger = pass.next();
+//					System.out.println(simulator.clock.formattedTime(passenger.getTimeOfArrival()/simulator.clock.NANOSECONDS_PER_SECOND) + ", " + passenger.getId() + ", " + passenger.getArrivalFloor()
+//					+ ", " + passenger.getDestinationFloor());
+//				}
+//			}
+//		}
 		simulator.run();
 	}
 	

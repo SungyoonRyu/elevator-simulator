@@ -164,9 +164,16 @@ public class Floor {
 			this.lastIntervalStart = timeNow;
 			this.generateNextTimeArrival(simulator);
 		}
-				
-		if (simulator.canGenerateArrivals()) {
-			this.tryGenerateNewArrival(simulator, duration);
+
+		// revise part
+		if(simulator.isUsingPassengerList()) {
+			if(simulator.canGenerateArrivals()) {
+				this.tryGenerateNewArrivalByList(simulator, duration);
+			}
+		} else {
+			if (simulator.canGenerateArrivals()) {
+				this.tryGenerateNewArrival(simulator, duration);
+			}
 		}
 	}
 	
@@ -209,6 +216,31 @@ public class Floor {
 			return true;
 		}
 			
+		return false;
+	}
+
+	public boolean tryGenerateNewArrivalByList(Simulator simulator, long duration) {
+		if(simulator.getPre_madeList().peek() == null)
+			return false;
+
+		if (simulator.getClock().timeNow() >= simulator.getPre_madeList().peek().getTimeOfArrival()) {
+
+			Passenger newPassenger = simulator.getPre_madeList().poll();
+
+			this.waitingQueue.add(newPassenger);
+			simulator.getControlSystem().handleHallCall(newPassenger);
+
+			simulator.log(
+					"Generated passenger #" + newPassenger.getId() + " at floor "
+							+ this.floorNumber + " with the destination: "
+							+ newPassenger.getDestinationFloor() + ".");
+
+			simulator.arrivalGenerated(newPassenger);
+
+			this.generateNextTimeArrival(simulator);
+			return true;
+		}
+
 		return false;
 	}
 
