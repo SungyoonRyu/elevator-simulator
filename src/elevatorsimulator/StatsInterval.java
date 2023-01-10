@@ -13,6 +13,7 @@ import java.util.List;
  *
  */
 public class StatsInterval {
+	private final Simulator simulator;
 	private final double startTime;
 	private final int num;
 	
@@ -30,16 +31,23 @@ public class StatsInterval {
 	private double longestWaitTime = 0;
 	
 	private final int[] elevatorCarDistribution;
+
+	private final EnergyConsumption[] elevatorEnergyConsumption;
 	
 	/**
 	 * Creates a new interval
 	 * @param startTime The start time of the interval
 	 * @param numElevators The number of elevator cars
 	 */
-	private StatsInterval(double startTime, int numElevators) {
+	private StatsInterval(Simulator simulator, double startTime, int numElevators) {
+		this.simulator = simulator;
 		this.startTime = startTime;
 		this.num = -1;
 		this.elevatorCarDistribution = new int[numElevators];
+		this.elevatorEnergyConsumption = new EnergyConsumption[numElevators];
+		for(int i = 0; i < numElevators; i++) {
+			this.elevatorEnergyConsumption[i] = new EnergyConsumption(simulator.getBuilding().getElevatorCars()[i]);
+		}
 	}
 	
 	/**
@@ -47,10 +55,15 @@ public class StatsInterval {
 	 * @param num The number of the interval
 	 * @param numElevators The number of elevator cars
 	 */
-	private StatsInterval(int num, int numElevators) {
+	private StatsInterval(Simulator simulator, int num, int numElevators) {
+		this.simulator = simulator;
 		this.num = num;
 		this.startTime = -1;
 		this.elevatorCarDistribution = new int[numElevators];
+		this.elevatorEnergyConsumption = new EnergyConsumption[numElevators];
+		for(int i = 0; i < numElevators; i++) {
+			this.elevatorEnergyConsumption[i] = new EnergyConsumption(simulator.getBuilding().getElevatorCars()[i]);
+		}
 	}
 	
 	/**
@@ -58,8 +71,8 @@ public class StatsInterval {
 	 * @param startTime The start time
 	 * @param numElevators The number of elevator cars
 	 */
-	public static StatsInterval newTimeInterval(double startTime, int numElevators) {
-		return new StatsInterval(startTime, numElevators);
+	public static StatsInterval newTimeInterval(Simulator simulator, double startTime, int numElevators) {
+		return new StatsInterval(simulator, startTime, numElevators);
 	}
 	
 	/**
@@ -67,8 +80,8 @@ public class StatsInterval {
 	 * @param num The number of the interval
 	 * @param numElevators The number of elevator cars
 	 */
-	public static StatsInterval newPollInterval(int num, int numElevators) {
-		return new StatsInterval(num, numElevators);
+	public static StatsInterval newPollInterval(Simulator simulator, int num, int numElevators) {
+		return new StatsInterval(simulator, num, numElevators);
 	}
 	
 	/**
@@ -257,6 +270,16 @@ public class StatsInterval {
 	public int[] getElevatorCarDistribution() {
 		return this.elevatorCarDistribution;
 	}
+
+	public EnergyConsumption[] getElevatorEnergyConsumption() {
+		return this.elevatorEnergyConsumption;
+	}
+
+	public void updateEnergyConsumption() {
+		for(EnergyConsumption ec : elevatorEnergyConsumption) {
+			ec.update();
+		}
+	}
 	
 	/**
 	 * Increases the number of served passenger for the given elevator car
@@ -272,6 +295,7 @@ public class StatsInterval {
 	 */
 	public static StatsInterval average(List<StatsInterval> intervals) {
 		StatsInterval averageInterval = StatsInterval.newTimeInterval(
+			null, // useless parameter
 			intervals.get(0).startTime,
 			intervals.get(0).elevatorCarDistribution.length);
 		
@@ -360,7 +384,12 @@ public class StatsInterval {
 			for (int i = 0; i < intervals.get(0).elevatorCarDistribution.length; i++) {
 				writer.write("Served passangers elevator " + i + ";");
 			}
-			
+
+			// add energy consumption
+			for (int i = 0; i< intervals.get(0).elevatorEnergyConsumption.length; i++) {
+				writer.write("Energy consumption elevator " + i + ";");
+			}
+
 			writer.write("\n");
 			
 			for (StatsInterval interval : intervals) {
@@ -377,6 +406,10 @@ public class StatsInterval {
 				
 				for (int served : interval.elevatorCarDistribution) {
 					writer.write(served + ";");
+				}
+
+				for (EnergyConsumption consumption : interval.elevatorEnergyConsumption) {
+					writer.write(consumption.getConsumption() + ";");
 				}
 				
 				writer.write("\n");

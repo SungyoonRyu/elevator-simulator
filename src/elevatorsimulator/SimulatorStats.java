@@ -44,14 +44,14 @@ public class SimulatorStats {
 		this.passengerFloorExits = new int[numFloors];
 		this.elevators = simulator.getBuilding().getElevatorCars();
 		
-		this.globalInterval = StatsInterval.newTimeInterval(0, this.elevators.length);
-		this.pollInterval = StatsInterval.newPollInterval(0, this.elevators.length);
-		this.currentStatsInterval = StatsInterval.newTimeInterval(0, this.elevators.length);
+		this.globalInterval = StatsInterval.newTimeInterval(simulator, 0, this.elevators.length);
+		this.pollInterval = StatsInterval.newPollInterval(simulator, 0, this.elevators.length);
+		this.currentStatsInterval = StatsInterval.newTimeInterval(simulator, 0, this.elevators.length);
 	}
 	
 	/**
 	 * Marks that a passenger has been generated
-	 * @param The passenger
+	 * @param passenger The passenger
 	 */
 	public void generatedPassenger(Passenger passenger) {
 		this.updateGeneratedPassenger(this.globalInterval, passenger);
@@ -221,8 +221,12 @@ public class SimulatorStats {
 		double duration = timeNow - this.currentStatsInterval.getStartTime();
 		if (duration >= INTERVAL_LENGTH_SEC) {
 			this.statsIntervals.add(this.currentStatsInterval);
-			this.currentStatsInterval = StatsInterval.newTimeInterval(timeNow, this.elevators.length);
+			this.currentStatsInterval = StatsInterval.newTimeInterval(simulator, timeNow, this.elevators.length);
 		}
+		// update energy consumption of each Interval
+		globalInterval.updateEnergyConsumption();
+		currentStatsInterval.updateEnergyConsumption();
+		pollInterval.updateEnergyConsumption();
 	}
 	
 	/**
@@ -243,7 +247,7 @@ public class SimulatorStats {
 	 * Resets the poll interval
 	 */
 	public void resetPollInterval() {
-		this.pollInterval = StatsInterval.newPollInterval(this.intervalNum++, this.elevators.length);
+		this.pollInterval = StatsInterval.newPollInterval(simulator, this.intervalNum++, this.elevators.length);
 	}
 	
 	/**
@@ -251,9 +255,9 @@ public class SimulatorStats {
 	 */
 	public void reset() {				
 		this.intervalNum = 0;
-		this.globalInterval = StatsInterval.newTimeInterval(0, this.elevators.length);
-		this.pollInterval = StatsInterval.newPollInterval(0, this.elevators.length);
-		this.currentStatsInterval = StatsInterval.newTimeInterval(0, this.elevators.length);
+		this.globalInterval = StatsInterval.newTimeInterval(simulator, 0, this.elevators.length);
+		this.pollInterval = StatsInterval.newPollInterval(simulator, 0, this.elevators.length);
+		this.currentStatsInterval = StatsInterval.newTimeInterval(simulator, 0, this.elevators.length);
 		this.statsIntervals.clear();
 		
 		for (int i = 0; i < passengerFloorArrivals.length; i++) {

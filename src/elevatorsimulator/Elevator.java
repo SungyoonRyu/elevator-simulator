@@ -125,6 +125,14 @@ public class Elevator {
 	}
 
 	/**
+	 * @author Sungyoon
+	 * @return ElevatorConfiguration
+	 */
+	public ElevatorConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	/**
 	 * Returns the next floor the elevator will be on. 
 	 * If the elevator is not traveling, the current floor is returned.
 	 */
