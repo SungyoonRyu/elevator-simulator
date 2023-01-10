@@ -325,16 +325,6 @@ public class Simulator {
 				
 		Simulator simulator = inputInterface.createSimulator();
 
-//		if(simulator.usingPassengerList) {
-//			if(simulator.pre_madeList != null) {
-//				Iterator<Passenger> pass = simulator.pre_madeList.iterator();
-//				while(pass.hasNext()) {
-//					Passenger passenger = pass.next();
-//					System.out.println(simulator.clock.formattedTime(passenger.getTimeOfArrival()/simulator.clock.NANOSECONDS_PER_SECOND) + ", " + passenger.getId() + ", " + passenger.getArrivalFloor()
-//					+ ", " + passenger.getDestinationFloor());
-//				}
-//			}
-//		}
 		simulator.run();
 	}
 	
