@@ -76,8 +76,20 @@ public class SimulatorInterface {
         int numElevator;
         ElevatorConfiguration elevatorConfiguration;
         int[] floorResidents;
-        TrafficProfile trafficProfile = TrafficProfiles.WEEK_DAY_PROFILE;
+        TrafficProfile trafficProfile;
         double timeStep;
+
+        switch (params.distributionType) {
+            default:
+                trafficProfile = TrafficProfiles.WEEK_DAY_PROFILE;
+                break;
+            case 2:
+                trafficProfile = TrafficProfiles.UNIFORM_PROFILE;
+                break;
+            case 3:
+                trafficProfile = TrafficProfiles.NORMAL_PROFILE;
+                break;
+        }
 
         List<List<String>> csv = readCSV(path + fileName);
 
@@ -142,6 +154,9 @@ public class SimulatorInterface {
 
         if (generateType) {
             System.out.println("Which distribution do you want to use?");
+            System.out.println("1. Default Profile");
+            System.out.println("2. Uniform distribution");
+            System.out.println("3. Normal distribution");
             System.out.print("> ");
             distributionType = sc.nextInt();
         }

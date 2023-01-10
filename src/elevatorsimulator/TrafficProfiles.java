@@ -12,6 +12,8 @@ public class TrafficProfiles {
 	 * Returns a week day profile
 	 */
 	public static final TrafficProfile WEEK_DAY_PROFILE;
+	public static final TrafficProfile UNIFORM_PROFILE;
+	public static final TrafficProfile NORMAL_PROFILE;
 	
 	private TrafficProfiles() {
 		
@@ -199,5 +201,29 @@ public class TrafficProfiles {
 //		}
 		
 		WEEK_DAY_PROFILE = new TrafficProfile(arrivalRates);
+	}
+
+	static {
+		Interval[] arrivalRates = new Interval[24 * 6];
+
+		for(int i = 0; i < 24 * 6; i++) {
+			arrivalRates[i] = new Interval(0.002, 0.05, 0.05);
+		}
+
+		UNIFORM_PROFILE = new TrafficProfile(arrivalRates);
+	}
+
+	static {
+		Interval[] arrivalRates = new Interval[24 * 6];
+
+		for (int i = 0; i < 24 * 6; i++) {
+			arrivalRates[i] = new Interval(0.002, getNormal(i, 72, 1), getNormal(i, 72, 1));
+		}
+
+		NORMAL_PROFILE = new TrafficProfile(arrivalRates);
+	}
+
+	public static double getNormal(double x, double m, double d) {
+		return (1/Math.sqrt(2*Math.PI*d*d)*Math.exp(-((x-m)*(x-m))/2*d*d));
 	}
 }
