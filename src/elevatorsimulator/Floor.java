@@ -223,8 +223,8 @@ public class Floor {
 		if(simulator.getPre_madeList().peek() == null)
 			return false;
 
-		if (simulator.getClock().timeNow() >= simulator.getPre_madeList().peek().getTimeOfArrival()) {
-
+		if (simulator.getClock().timeNow() >= simulator.getPre_madeList().peek().getTimeOfArrival()
+		&& this.floorNumber == simulator.getPre_madeList().peek().getArrivalFloor()) {
 			Passenger newPassenger = simulator.getPre_madeList().poll();
 
 			this.waitingQueue.add(newPassenger);
