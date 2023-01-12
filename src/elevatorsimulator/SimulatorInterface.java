@@ -20,22 +20,6 @@ public class SimulatorInterface {
             this.algorithmType = algorithmType;
         }
     }
-    public static void main(String[] args) {
-        String sourcePath = path;
-        String filename = "\\BuildingConfigure.csv";
-
-        List<List<String>> buildingConfig = readCSV(sourcePath + filename);
-        Iterator<List<String>> iter1 = buildingConfig.iterator();
-        while(iter1.hasNext()) {
-            List<String> aLine = iter1.next();
-            Iterator<String> iter2 = aLine.iterator();
-            while(iter2.hasNext()) {
-                String word = iter2.next();
-                System.out.print(word + " ");
-            }
-            System.out.println();
-        }
-    }
 
     public static List<List<String>> readCSV(String filePath) {
         List<List<String>> csvList = new ArrayList<List<String>>();
@@ -162,11 +146,12 @@ public class SimulatorInterface {
         }
 
         System.out.println("Which \"Algorithm\" do you want to use?");
-        System.out.println("1. Longest Queue First");
-        System.out.println("2. Zoning");
-        System.out.println("3. Round Robin");
-        System.out.println("4. Round Robin(Up-peak)");
-        System.out.println("5. Three Passage Group");
+        System.out.println("1. Collective Control");
+        System.out.println("2. Longest Queue First");
+        System.out.println("3. Zoning");
+        System.out.println("4. Round Robin");
+        System.out.println("5. Round Robin(Up-peak)");
+        System.out.println("6. Three Passage Group");
         System.out.print("> ");
         algorithmType = sc.nextInt();
 
