@@ -1,9 +1,6 @@
 package elevatorsimulator;
 
-import elevatorsimulator.schedulers.LongestQueueFirst;
-import elevatorsimulator.schedulers.RoundRobin;
-import elevatorsimulator.schedulers.ThreePassageGroupElevator;
-import elevatorsimulator.schedulers.Zoning;
+import elevatorsimulator.schedulers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,14 @@ public class SchedulerCreators {
     public static final List<SchedulerCreator> creators = new ArrayList<SchedulerCreator>();
 
     static {
+        creators.add(new SchedulerCreator() {
+            @Override
+
+            public SchedulingAlgorithm createScheduler(Building building) {
+                return new CollectiveControl();
+            }
+        });
+
         creators.add(new SchedulerCreator() {
             @Override
 
