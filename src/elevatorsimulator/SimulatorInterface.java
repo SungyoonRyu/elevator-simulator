@@ -152,7 +152,7 @@ public class SimulatorInterface {
         int type = sc.nextInt();
         generateType = type == 1 ? true : false;
 
-        if (generateType) {
+        if (!generateType) {
             System.out.println("Which distribution do you want to use?");
             System.out.println("1. Default Profile");
             System.out.println("2. Uniform distribution");
