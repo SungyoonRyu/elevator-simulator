@@ -150,16 +150,17 @@ public class SimulatorInterface {
         System.out.println("2. Longest Queue First");
         System.out.println("3. Zoning");
         System.out.println("4. Round Robin");
-        System.out.println("5. Round Robin(Up-peak)");
+        System.out.println("5. Up-peak");
         System.out.println("6. Three Passage Group");
+        System.out.println("7. Zoning in High Building");
         System.out.print("> ");
         algorithmType = sc.nextInt();
 
         return new SimulatorParams(generateType, distributionType, algorithmType);
     }
 
-    public static Queue<Passenger> createPre_madePassengerList(Simulator simulator) {
-        Queue<Passenger> passengerList = new LinkedList<Passenger>();
+    public static Deque<Passenger> createPre_madePassengerList(Simulator simulator) {
+        Deque<Passenger> passengerList = new LinkedList<Passenger>();
         String fileName = "\\passenger_list.csv";
 
         List<List<String>> csv = readCSV(path + fileName);

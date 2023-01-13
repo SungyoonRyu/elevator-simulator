@@ -52,5 +52,12 @@ public class SchedulerCreators {
                 return new ThreePassageGroupElevator(building);
             }
         });
+
+        creators.add(new SchedulerCreator() {
+            @Override
+            public SchedulingAlgorithm createScheduler(Building building) {
+                return new HighZoning(building.getElevatorCars().length, building);
+            }
+        });
     }
 }
