@@ -13,7 +13,7 @@ import elevatorsimulator.Elevator.State;
 public class Floor {
 	private final int floorNumber;
 	private final int numResidents;
-	private final TrafficProfile traficProfile;
+	private final TrafficProfile trafficProfile;
 	
 	private final Queue<Passenger> waitingQueue;
 	
@@ -33,7 +33,7 @@ public class Floor {
 	public Floor(int floorNumber, int numResidents, TrafficProfile trafficProfile) {
 		this.floorNumber = floorNumber;
 		this.numResidents = numResidents;
-		this.traficProfile = trafficProfile;
+		this.trafficProfile = trafficProfile;
 		this.waitingQueue = new LinkedList<Passenger>();
 	}
 	
@@ -63,7 +63,7 @@ public class Floor {
 	 * @param simulator The simulator
 	 */
 	private void setInterval(Simulator simulator) {
-		this.interval = this.traficProfile.getIntervalData(simulator.getClock().elapsedSinceRealTime(0));
+		this.interval = this.trafficProfile.getIntervalData(simulator.getClock().elapsedSinceRealTime(0));
 		this.destinationFloorGenerator = new RandomValueGenerator<Floor>(simulator.getRandom());
 		
 		for (Floor floor : simulator.getBuilding().getFloors()) {
@@ -85,7 +85,7 @@ public class Floor {
 	private void generateNextTimeArrival(Simulator simulator) {
 		double averageArrivalRate = this.interval.averageNumberOfArrivals(
 			simulator.getBuilding(),
-			this) / (double)this.traficProfile.lengthInMinutes();
+			this) / (double)this.trafficProfile.lengthInMinutes();
 		
 		double nextTime = (-Math.log(1.0 - simulator.getRandom().nextDouble()) / averageArrivalRate);
 		this.timeLeft = simulator.getClock().minutesToTime(nextTime);
@@ -159,7 +159,7 @@ public class Floor {
 		long timeNow = clock.timeNow();
 		long intervalDuration = timeNow - this.lastIntervalStart;
 		
-		if (clock.durationFromRealTime(intervalDuration) >= this.traficProfile.length() || interval == null) {
+		if (clock.durationFromRealTime(intervalDuration) >= this.trafficProfile.length() || interval == null) {
 			this.setInterval(simulator);
 			this.lastIntervalStart = timeNow;
 			this.generateNextTimeArrival(simulator);
