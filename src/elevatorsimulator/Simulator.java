@@ -24,7 +24,7 @@ public class Simulator {
 	private long passengerId = 0;
 
 	private final boolean usingPassengerList;
-	private Queue<Passenger> pre_madeList = null;
+	private Deque<Passenger> pre_madeList = null;
 	private final boolean enableLog = true;
 	private final boolean debugMode = false;
 
@@ -119,7 +119,7 @@ public class Simulator {
 	}
 
 	public boolean isUsingPassengerList() { return usingPassengerList; }
-	public Queue<Passenger> getPre_madeList() { return pre_madeList; }
+	public Deque<Passenger> getPre_madeList() { return pre_madeList; }
 
 	/**
 	 * Indicates if the stats are exported
