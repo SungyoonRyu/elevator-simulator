@@ -252,7 +252,7 @@ public class Elevator {
 	public void update(Simulator simulator) {
 		long timeNow = simulator.getClock().timeNow();
 		SimulatorClock clock = simulator.getClock();
-		
+
 		switch (this.state) {
 		case MOVING:
 			{
@@ -261,8 +261,10 @@ public class Elevator {
 				if (duration >= clock.secondsToTime(this.configuration.getFloorTime())) {		
 					if (this.direction == Direction.UP) {
 						this.floor++;
+						System.out.println(id + " : " + floor);
 					} else if (this.direction == Direction.DOWN) {
 						this.floor--;
+						System.out.println(id + " : " + floor);
 					}
 					
 					this.lastMovement = timeNow;
