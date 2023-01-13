@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 public class Passenger {
 	private final long id;
 	private final int arrivalFloor;
-	private final int destinationFloor;
+	private int destinationFloor;
 	private final int capacity;
 	private boolean boarded;
 	
@@ -64,6 +64,10 @@ public class Passenger {
 	 */
 	public int getDestinationFloor() {
 		return destinationFloor;
+	}
+
+	public void setDestinationFloor(int newDestination) {
+		destinationFloor = newDestination;
 	}
 	
 	/**
