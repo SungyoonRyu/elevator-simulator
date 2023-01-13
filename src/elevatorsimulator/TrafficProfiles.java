@@ -207,7 +207,7 @@ public class TrafficProfiles {
 		Interval[] arrivalRates = new Interval[24 * 6];
 
 		for(int i = 0; i < 24 * 6; i++) {
-			arrivalRates[i] = new Interval(0.014, 0.05, 0.05);
+			arrivalRates[i] = new Interval(0.009, 0.05, 0.05);
 		}
 
 		UNIFORM_PROFILE = new TrafficProfile(arrivalRates);
