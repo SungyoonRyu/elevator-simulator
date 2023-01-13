@@ -261,10 +261,8 @@ public class Elevator {
 				if (duration >= clock.secondsToTime(this.configuration.getFloorTime())) {		
 					if (this.direction == Direction.UP) {
 						this.floor++;
-						System.out.println(id + " : " + floor);
 					} else if (this.direction == Direction.DOWN) {
 						this.floor--;
-						System.out.println(id + " : " + floor);
 					}
 					
 					this.lastMovement = timeNow;
