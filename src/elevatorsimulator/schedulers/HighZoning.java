@@ -77,6 +77,12 @@ public class HighZoning implements SchedulingAlgorithm {
                 maxFloor++;
             }
 
+            if(zone == numZones - 1) {
+                while (maxFloor < building.numFloors() - 1) {
+                    maxFloor++;
+                }
+            }
+
             for (Elevator elevator : building.getElevatorCars()) {
                 if (elevator.getId() >= zone * elevatorsPerZone && elevator.getId() < (zone + 1) * elevatorsPerZone) {
                     zoneElevators.add(elevator);
@@ -132,10 +138,12 @@ public class HighZoning implements SchedulingAlgorithm {
                 passenger.getDestinationFloor() >= this.getZone(elevator).minFloorNum) {
 
         } else if (passenger.getDestinationFloor() > this.getZone(elevator).maxFloorNum) {
-            renewal.add(new Passenger(passenger.getId(), passenger.getArrivalFloor(), passenger.getDestinationFloor(), passenger.getCapacity(), simulator.getClock()));
+            renewal.add(new Passenger(passenger.getId(), passenger.getArrivalFloor(),
+                    passenger.getDestinationFloor(), passenger.getCapacity(), simulator.getClock()));
             passenger.setDestinationFloor(this.getZone(elevator).maxFloorNum);
         } else {
-            renewal.add(new Passenger(passenger.getId(), passenger.getArrivalFloor(), passenger.getDestinationFloor(), passenger.getCapacity(), simulator.getClock()));
+            renewal.add(new Passenger(passenger.getId(), passenger.getArrivalFloor(),
+                    passenger.getDestinationFloor(), passenger.getCapacity(), simulator.getClock()));
             passenger.setDestinationFloor(this.getZone(elevator).minFloorNum);
         }
     }
@@ -147,7 +155,8 @@ public class HighZoning implements SchedulingAlgorithm {
             Passenger renew = iterator.next();
             if(renew.getId() == passenger.getId()) {
                 simulator.getPre_madeList().addFirst(new Passenger(passenger.getId(), elevator.getFloor(),
-                        renew.getDestinationFloor(), passenger.getCapacity(), simulator.getClock().timeNow() + 100));
+                        renew.getDestinationFloor(), passenger.getCapacity(),
+                        simulator.getClock().timeNow() + 100));
                 iterator.remove();
             }
         }
